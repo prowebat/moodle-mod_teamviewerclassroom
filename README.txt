@@ -1,0 +1,2 @@
+TeamViewer Classroom is a collaborative, interactive and intuitive video conferencing system developed to provide the best in-person class, seminar, training, or lecture experience through pragmatic and easy-to-use features including screen sharing, breakout rooms, document collaboration, whiteboards, quizzes/surveys, recordings and much more.
+To install the plugin and create conferences a TeamViewer Classroom license is required to be purchased, alternatively a free trial can be requested here (https://www.teamviewer.com/en/classroom/#request
