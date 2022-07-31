@@ -8,4 +8,4 @@ require_once("../../config.php");
 
 $id = required_param('id', PARAM_INT);
 
-redirect(new moodle_url('/mod/teamviewerclassroom/index.php', array('id' => $id)));
+redirect(new moodle_url('/mod/teamviewerclassroom/view.php', array('id' => $id)));
