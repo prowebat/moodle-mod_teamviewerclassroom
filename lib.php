@@ -23,7 +23,7 @@ function teamviewerclassroom_supports($feature) {
 		case FEATURE_RATE:
 			return false;
 		case FEATURE_BACKUP_MOODLE2:
-			return false;
+			return true;
 		case FEATURE_SHOW_DESCRIPTION:
 			return false;
 		case FEATURE_PLAGIARISM:
@@ -151,30 +151,28 @@ function teamviewerclassroom_is_teacher() {
 function teamviewerclassroom_api_request($method, $path, $data) {
 	$url = trim(get_config('teamviewerclassroom', 'server_url'), ' /').
 		'/'.$path;
-	//		'?access_token='.get_config('teamviewerclassroom', 'api_key');
 
-	$ch = curl_init($url);
-	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+	$c = new curl();
 
 	$headers = [];
 
 	if ($data !== null) {
-		$postdata = json_encode($data);
-		// curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
 		$headers[] = 'Content-Type: application/json';
 	}
 
 
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 	$headers[] = 'Authorization: Bearer '.get_config('teamviewerclassroom', 'api_key');
-	curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+	$c->setHeader($headers);
 
-	$result = curl_exec($ch);
-	$status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	if ($method == 'POST' || $method == 'PUT') {
+		$c->setHeader(['Content-Type: application/json']);
+		$postdata = json_encode($data);
+		$result = $c->{$method}($url, $postdata);
+	} else {
+		$result = $c->{$method}($url);
+	}
 
-	curl_close($ch);
+	$status_code = $c->get_info()['http_code'];
 
 	if (strtoupper($method) == 'DELETE') {
 		return $status_code == 200;
