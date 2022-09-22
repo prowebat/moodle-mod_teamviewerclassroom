@@ -5,8 +5,8 @@
  */
 
 require('../../config.php');
-require __DIR__.'/lib.php';
-require __DIR__.'/locallib.php';
+require_once __DIR__.'/lib.php';
+require_once __DIR__.'/locallib.php';
 
 $id = optional_param('id', 0, PARAM_INT);        // Course module ID
 $action = optional_param('action', '', PARAM_TEXT);        // Course module ID
@@ -22,6 +22,12 @@ require_capability('mod/teamviewerclassroom:view', $context);
 
 // Completion and trigger events.
 // url_view($teamviewerclassroom, $course, $cm, $context);
+
+$params = [
+	'objectid' => $cm->id,
+	'context' => $context,
+];
+$event = \mod_teamviewerclassroom\event\course_module_viewed::create($params);
 
 $PAGE->set_url('/mod/teamviewerclassroom/view.php', array('id' => $cm->id));
 $PAGE->set_title($course->shortname.': '.$teamviewerclassroom->name);
